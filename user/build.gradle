@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+group = 'com.ninjaduoduo'
+sourceCompatibility = '1.8'
+jar.archiveName = 'user.jar'
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/google/' }
+    maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+}
+
+dependencies {
+    compile "io.springfox:springfox-swagger2:$swagger2Version"
+    compile "io.springfox:springfox-swagger-ui:$swagger2Version"
+    compile project(":common")
+    compile project(":user-contract")
+}

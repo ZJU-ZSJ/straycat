@@ -1,0 +1,6 @@
+rootProject.name = 'straycat'
+include 'gateway'
+include 'gateway-contract'
+include 'user'
+include 'user-contract'
+include 'common'

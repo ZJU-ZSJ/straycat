@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	    http://code.alibabatech.com/schema/dubbo
+	 http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!-- provider's application name, used for tracing dependency relationship -->
+    <!-- use multicast registry center to export service -->
+    <dubbo:registry protocol="zookeeper" address="${zookeeper.connect}"/>
+    <!-- use dubbo protocol to export service on port 20880 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+    <!-- service implementation, as same as regular local bean -->
+    <dubbo:service interface="com.ninjaduoduo.user.api.UserTestService" ref="userTestServiceImpl"/>
+</beans>

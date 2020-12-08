@@ -1,0 +1,23 @@
+apply plugin: 'java'
+
+group = 'com.ninjaduoduo'
+sourceCompatibility = '1.8'
+jar.archiveName = 'gateway.jar'
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/google/' }
+    maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/resources/$env", "./config", "src/main/resources/base", "config"]
+        }
+    }
+    test {
+        resources {
+            srcDirs = ["src/test/resources/$env", "./config", "src/test/resources/testdatas"]
+        }
+    }
+}

@@ -1,0 +1,91 @@
+ext {
+    springBootVersion = '2.2.5.RELEASE'
+    mybatisVersion = '3.4.6'
+    dubboVersion = '2.6.4'
+    mybatisSpringVersion = '1.3.1'
+    swagger2Version = '2.6.0'
+    fastjsonVersion = '1.2.7'
+    log4jVersion = '2.11.1'
+    curatorVersion = '4.3.0'
+
+    env = System.getProperty("env") == null ? "development" : System.getProperty("env")
+}
+
+buildscript {
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.11.RELEASE")
+    }
+}
+
+allprojects {
+
+    apply plugin: 'base'
+    apply plugin: 'java'
+    apply plugin: "jacoco"
+
+
+    group = 'com.ninjaduoduo'
+
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google/' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter/'}
+    }
+
+    configurations {
+        all*.exclude group: "org.springframework.boot", module: "spring-boot-starter-logging"
+        all*.exclude group: "org.slf4j", module: "slf4j-log4j12"
+    }
+
+    configurations.all {
+        // check for updates every build
+        resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+    }
+
+
+    dependencies {
+        compile "org.springframework.boot:spring-boot-starter-web:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-cache:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-jdbc:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-actuator:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-aop:$springBootVersion"
+        compile "org.springframework.boot:spring-boot-starter-validation:$springBootVersion"
+        compile "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisSpringVersion"
+        compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-api:$log4jVersion"
+        compile "org.apache.logging.log4j:log4j-slf4j-impl:$log4jVersion"
+        compile "com.alibaba:fastjson:$fastjsonVersion"
+        compile "com.alibaba:dubbo:$dubboVersion"
+        compile "org.apache.curator:curator-recipes:$curatorVersion"
+
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+
+    sourceSets {
+        main {
+            resources {
+                srcDirs = ["src/main/resources/base", "src/main/resources/$env", "src/main/resources/templates"]
+            }
+        }
+        test {
+            resources {
+                srcDirs = ["src/test/resources/base", "src/test/resources/$env"]
+            }
+        }
+    }
+
+
+    jacoco {
+        toolVersion = "0.8.2"
+        reportsDir = file("$buildDir/jacocoReports")
+    }
+
+}
